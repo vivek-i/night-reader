@@ -55,7 +55,7 @@ export default function PdfUploader() {
       onDragLeave={handleDragLeave}
     >
       <div
-        className={`absolute inset-12 rounded-sm border-2 border-dashed transition-opacity duration-200 ${
+        className={`absolute inset-12 rounded-sm border-2 border-dashed transition-opacity duration-200 pointer-events-none ${
           isDragging
             ? "border-[#ccc] opacity-100"
             : "border-transparent opacity-0"
