@@ -16,7 +16,9 @@ export default function SinglePageScroll() {
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) {
-        const w = entry.contentRect.width - 64;
+        // Tighter padding on narrow screens
+        const padding = entry.contentRect.width < 640 ? 16 : 64;
+        const w = entry.contentRect.width - padding;
         setPageWidth(Math.min(w, 900));
       }
     });
@@ -28,10 +30,10 @@ export default function SinglePageScroll() {
   return (
     <div
       ref={containerRef}
-      className="flex-1 overflow-y-auto flex flex-col items-center py-8 px-8"
+      className="flex-1 overflow-y-auto flex flex-col items-center py-4 px-2 sm:py-8 sm:px-8"
     >
       {Array.from({ length: numPages }, (_, i) => (
-        <div key={i + 1} className="mb-4">
+        <div key={i + 1} className="mb-2 sm:mb-4">
           <PageRenderer pageNumber={i + 1} width={pageWidth} />
         </div>
       ))}

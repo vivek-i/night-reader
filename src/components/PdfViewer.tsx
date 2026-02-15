@@ -3,14 +3,19 @@
 import { Document } from "react-pdf";
 import { useReader } from "@/context/ReaderContext";
 import { getModeConfig } from "@/lib/viewingModes";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import SinglePageScroll from "./SinglePageScroll";
 import TwoPageSpread from "./TwoPageSpread";
 
 export default function PdfViewer() {
   const { fileUrl, layout, viewingMode, setNumPages } = useReader();
   const mode = getModeConfig(viewingMode);
+  const isMobile = useIsMobile();
 
   if (!fileUrl) return null;
+
+  // Force single-scroll on mobile — two-page is unreadable on small screens
+  const effectiveLayout = isMobile ? "single-scroll" : layout;
 
   return (
     <div
@@ -32,7 +37,11 @@ export default function PdfViewer() {
         }
         className="flex-1 flex flex-col min-h-0"
       >
-        {layout === "single-scroll" ? <SinglePageScroll /> : <TwoPageSpread />}
+        {effectiveLayout === "single-scroll" ? (
+          <SinglePageScroll />
+        ) : (
+          <TwoPageSpread />
+        )}
       </Document>
     </div>
   );
